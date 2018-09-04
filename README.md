@@ -14,7 +14,7 @@ npm install -g @vue/cli-service-global
 
 ```
 
-
+https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/config.md 
 
 
 ## Project setup
