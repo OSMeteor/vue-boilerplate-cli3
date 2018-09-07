@@ -4,22 +4,37 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
-  // index: {
-  //   // 入口文件
-  //   entry: './src/main.js',
-  //   // 模版文件
-  //   template: 'public/index.html',
-  //   // 输出文件名
-  //   filename: 'index.html'
-  // },
+ 
    baseUrl: '/',
   //  outputDir: 'dist',
   //  assetsDir: '', 
    lintOnSave: false, //保存时是不是用eslint-loader 来lint 代码
   //  compiler: false,
    transpileDependencies: [ /* string or regex */ ],
-   productionSourceMap: true,
+   productionSourceMap: false,
   parallel: require('os').cpus().length > 1,
+  pages: {
+    index: {
+      // page 的入口
+      entry: 'src/main.js',
+      // 模板来源
+      template: 'public/index.html',
+      // 在 dist/index.html 的输出
+      filename: 'index.html',
+      // 当使用 title 选项时，
+      // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
+      title: 'Index Page',
+      // 在这个页面中包含的块，默认情况下会包含
+      // 提取出来的通用 chunk 和 vendor chunk。
+      chunks: ['chunk-vendors', 'chunk-common', 'index']
+    },
+    // 当使用只有入口的字符串格式时，
+    // 模板会被推导为 `public/subpage.html`
+    // 并且如果找不到的话，就回退到 `public/index.html`。
+    // 输出文件名会被推导为 `subpage.html`。
+    // subpage: 'src/subpage/main.js'
+  },
+
   chainWebpack: (config) => { 
     // config
     //   // Interact with entry points
@@ -39,25 +54,27 @@ module.exports = {
     //    .output
     //    .path('dist')
     //    .filename('[name].js');
-    config.resolve.alias
-      .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
-      .set('_c', resolve('src/components'))
-      .set('_conf', resolve('config'))
-      .set('vue$', 'vue/dist/vue.esm.js')
-      .set('@components', resolve('src/components'))
-  },
-  configureWebpack: (config) => {
-   
-     if (process.env.NODE_ENV === 'production') {
-       // 为生产环境修改配置...
-     } else {
-       // 为开发环境修改配置...
-     }
+    // config.resolve.alias
+    //   .set('@', resolve('src')) // key,value自行定义，比如.set('@@', resolve('src/components'))
+    //   .set('_c', resolve('src/components'))
+    //   .set('_conf', resolve('config'))
+    //   .set('vue$', 'vue/dist/vue.esm.js')
+    //   .set('@components', resolve('src/components'))
 
+     
   },
+ configureWebpack: config => {
+   config.resolve = {
+     extensions: ['.js', '.vue', '.json', ".css"],
+     alias: {
+       'vue$': 'vue/dist/vue.esm.js',
+       '@': resolve('src'),
+     }
+   }
+ },
   css: { // 配置css模块
     extract: true,
-    sourceMap: false,
+    sourceMap: true,
     modules: false,
     //  pwa: {},
     loaderOptions: { // 向预处理器 Loader 传递配置选项
