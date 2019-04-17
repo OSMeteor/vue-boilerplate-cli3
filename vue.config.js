@@ -4,15 +4,19 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 module.exports = {
- 
-   baseUrl: '/',
+  baseUrl: undefined,
+
   //  outputDir: 'dist',
   //  assetsDir: '', 
-   lintOnSave: false, //保存时是不是用eslint-loader 来lint 代码
+  //保存时是不是用eslint-loader 来lint 代码
+  lintOnSave: undefined,
+
   //  compiler: false,
-   transpileDependencies: [ /* string or regex */ ],
-   productionSourceMap: false,
-  parallel: require('os').cpus().length > 1,
+  transpileDependencies: [ /* string or regex */ ],
+
+  productionSourceMap: false,
+  parallel: undefined,
+
   pages: {
     index: {
       // page 的入口
@@ -63,30 +67,33 @@ module.exports = {
 
      
   },
- configureWebpack: config => {
-   config.resolve = {
-     extensions: ['.js', '.vue', '.json', ".css"],
-     alias: {
-       'vue$': 'vue/dist/vue.esm.js',
-       '@': resolve('src'),
-     }
-   }
- },
-  css: { // 配置css模块
-    extract: true,
-    sourceMap: true,
-    modules: false,
-    //  pwa: {},
-    loaderOptions: { // 向预处理器 Loader 传递配置选项
-      less: { // 配置less（其他样式解析用法一致）
-        javascriptEnabled: true // 设置为true
+
+  configureWebpack: config => {
+    config.resolve = {
+      extensions: ['.js', '.vue', '.json', ".css"],
+      alias: {
+        'vue$': 'vue/dist/vue.esm.js',
+        '@': resolve('src'),
       }
     }
   },
-   // 三方插件的选项
+
+  // 三方插件的选项
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
+  },
+
   pluginOptions: {
     // ...
-  }
+  },
+
+  outputDir: undefined,
+  assetsDir: undefined,
+  runtimeCompiler: true
 }
 
  
